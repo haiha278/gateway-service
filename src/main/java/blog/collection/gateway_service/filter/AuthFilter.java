@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
-@Component
+@Component("AuthFilter")
 public class AuthFilter extends AbstractGatewayFilterFactory<AbstractGatewayFilterFactory.NameConfig> {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
