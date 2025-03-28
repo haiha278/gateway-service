@@ -3,6 +3,7 @@ package blog.collection.gateway_service.filter;
 import blog.collection.gateway_service.dto.BaseResponse;
 import blog.collection.gateway_service.dto.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -16,7 +17,12 @@ import java.time.LocalDateTime;
 
 public class GlobalErrorFilter implements GlobalFilter, Ordered {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
+
+    @Autowired
+    public GlobalErrorFilter(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

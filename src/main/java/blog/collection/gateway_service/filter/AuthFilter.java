@@ -59,7 +59,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AbstractGatewayFilt
                 String token = authHeader.substring(7);
 
                 if (blackListToken.isTokenBlackList(token)) {
-                    return onError(exchange, "Token is blacklisted", HttpStatus.UNAUTHORIZED, path);
+                    return onError(exchange, "You need to login again!", HttpStatus.UNAUTHORIZED, path);
                 }
 
                 if (!jwtTokenProvider.validateToken(token)) {

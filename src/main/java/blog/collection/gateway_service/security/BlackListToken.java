@@ -19,6 +19,6 @@ public class BlackListToken {
     }
 
     public boolean isTokenBlackList(String token) {
-        return Boolean.TRUE.equals(redisTemplate.hasKey(token));
+        return Boolean.TRUE.equals(redisTemplate.hasKey(BLACK_LIST_KEY_PREFIX + token));
     }
 }
