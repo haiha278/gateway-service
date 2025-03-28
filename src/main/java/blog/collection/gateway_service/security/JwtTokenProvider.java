@@ -38,7 +38,11 @@ public class JwtTokenProvider {
     }
 
     public String getUserIdFromToken(String token) {
-        return getClaimFromToken(token, "userId");
+        return getClaimFromToken(token, "user_id");
+    }
+
+    public String getUserAuthMethodIdFromToken(String token) {
+        return getClaimFromToken(token, "user_auth_method_id");
     }
 
     public boolean validateToken(String token) {

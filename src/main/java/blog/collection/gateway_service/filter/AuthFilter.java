@@ -1,4 +1,5 @@
 package blog.collection.gateway_service.filter;
+
 import blog.collection.gateway_service.dto.BaseResponse;
 import blog.collection.gateway_service.dto.ErrorResponse;
 import org.springframework.web.server.ServerWebExchange;
@@ -17,14 +18,14 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 
 @Component("AuthFilter")
+
 public class AuthFilter extends AbstractGatewayFilterFactory<AbstractGatewayFilterFactory.NameConfig> {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
-
     @Autowired
     private BlackListToken blackListToken;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public AuthFilter() {
         super(NameConfig.class);
@@ -68,6 +69,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AbstractGatewayFilt
 
                 String username = jwtTokenProvider.getUsernameFromToken(token);
                 String userId = jwtTokenProvider.getUserIdFromToken(token);
+                String userAuthMethodId = jwtTokenProvider.getUserAuthMethodIdFromToken(token);
                 String authProvider = jwtTokenProvider.getClaimFromToken(token, "auth_provider");
 
                 if (username == null || userId == null) {
@@ -76,6 +78,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AbstractGatewayFilt
 
                 exchange.getRequest().mutate()
                         .header("X-UserId", userId)
+                        .header("X-UserAuthMethodId", userAuthMethodId)
                         .header("X-Username", username)
                         .header("X-Auth-Provider", authProvider)
                         .build();
