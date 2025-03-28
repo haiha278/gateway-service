@@ -18,13 +18,13 @@ public class JwtTokenProvider {
     private Long REFRESH_JWT_EXPIRATION;
 
     // Lấy claim từ token
-    public String getClaimFromToken(String token, String claimName) {
+    public Object getClaimFromToken(String token, String claimName) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY.getBytes())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        return claims.get(claimName, String.class);
+        return claims.get(claimName);
     }
 
     // Lấy username từ token
@@ -38,11 +38,19 @@ public class JwtTokenProvider {
     }
 
     public String getUserIdFromToken(String token) {
-        return getClaimFromToken(token, "user_id");
+        Object claimValue = getClaimFromToken(token, "user_id");
+        if (claimValue instanceof Integer) {
+            return String.valueOf(claimValue); // Chuyển Integer thành String
+        }
+        return (String) claimValue;
     }
 
     public String getUserAuthMethodIdFromToken(String token) {
-        return getClaimFromToken(token, "user_auth_method_id");
+        Object claimValue = getClaimFromToken(token, "user_auth_method_id");
+        if (claimValue instanceof Integer) {
+            return String.valueOf(claimValue); // Chuyển Integer thành String
+        }
+        return (String) claimValue;
     }
 
     public boolean validateToken(String token) {

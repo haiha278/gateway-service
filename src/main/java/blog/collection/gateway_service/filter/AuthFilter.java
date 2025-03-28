@@ -70,7 +70,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AbstractGatewayFilt
                 String username = jwtTokenProvider.getUsernameFromToken(token);
                 String userId = jwtTokenProvider.getUserIdFromToken(token);
                 String userAuthMethodId = jwtTokenProvider.getUserAuthMethodIdFromToken(token);
-                String authProvider = jwtTokenProvider.getClaimFromToken(token, "auth_provider");
+                String authProvider = (String) jwtTokenProvider.getClaimFromToken(token, "auth_provider");
 
                 if (username == null || userId == null) {
                     return onError(exchange, "Token does not contain user information", HttpStatus.UNAUTHORIZED, path);
