@@ -42,7 +42,7 @@ public class JwtTokenProvider {
         if (claimValue instanceof Integer) {
             return String.valueOf(claimValue); // Chuyển Integer thành String
         }
-        return (String) claimValue;
+        return null;
     }
 
     public String getUserAuthMethodIdFromToken(String token) {
@@ -50,7 +50,7 @@ public class JwtTokenProvider {
         if (claimValue instanceof Integer) {
             return String.valueOf(claimValue); // Chuyển Integer thành String
         }
-        return (String) claimValue;
+        return null;
     }
 
     public boolean validateToken(String token) {
