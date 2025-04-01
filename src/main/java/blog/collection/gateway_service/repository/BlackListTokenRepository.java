@@ -1,4 +1,4 @@
-package blog.collection.gateway_service.security;
+package blog.collection.gateway_service.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @RequiredArgsConstructor
-public class BlackListToken {
+public class BlackListTokenRepository {
 
     private static final String BLACK_LIST_KEY_PREFIX = "blacklist:token: ";
 

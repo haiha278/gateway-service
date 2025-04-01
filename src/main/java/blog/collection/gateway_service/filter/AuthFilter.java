@@ -3,7 +3,7 @@ package blog.collection.gateway_service.filter;
 import blog.collection.gateway_service.dto.BaseResponse;
 import blog.collection.gateway_service.dto.ErrorResponse;
 import org.springframework.web.server.ServerWebExchange;
-import blog.collection.gateway_service.security.BlackListToken;
+import blog.collection.gateway_service.repository.BlackListTokenRepository;
 import blog.collection.gateway_service.security.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AbstractGatewayFilt
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
-    private BlackListToken blackListToken;
+    private BlackListTokenRepository blackListTokenRepository;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -35,14 +35,14 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AbstractGatewayFilt
     public GatewayFilter apply(NameConfig config) {
         return (exchange, chain) -> {
             String path = exchange.getRequest().getPath().toString();
-            if (path.startsWith("/auth/login") ||
-                    path.startsWith("/auth/logout") ||
-                    path.startsWith("/auth/sign-up") ||
-                    path.startsWith("/auth/verify-email") ||
-                    path.startsWith("/auth/success") ||
-                    path.startsWith("/auth/failure") ||
-                    path.startsWith("/auth/reset/verify") ||
-                    path.startsWith("/auth/reset-password") ||
+            if (path.startsWith("/blog-collection/auth/login") ||
+                    path.startsWith("/blog-collection/auth/logout") ||
+                    path.startsWith("/blog-collection/auth/sign-up") ||
+                    path.startsWith("/blog-collection/auth/verify-email") ||
+                    path.startsWith("/blog-collection/auth/success") ||
+                    path.startsWith("/blog-collection/auth/failure") ||
+                    path.startsWith("/blog-collection/auth/reset/verify") ||
+                    path.startsWith("/blog-collection/auth/reset-password") ||
                     path.startsWith("/login/oauth2")) {
                 return chain.filter(exchange);
             }
@@ -59,7 +59,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AbstractGatewayFilt
 
                 String token = authHeader.substring(7);
 
-                if (blackListToken.isTokenBlackList(token)) {
+                if (blackListTokenRepository.isTokenBlackList(token)) {
                     return onError(exchange, "You need to login again!", HttpStatus.UNAUTHORIZED, path);
                 }
 
@@ -85,7 +85,6 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AbstractGatewayFilt
 
                 return chain.filter(exchange);
             } catch (RuntimeException e) {
-                // Xử lý các exception liên quan đến token validation
                 return onError(exchange, e.getMessage(), HttpStatus.UNAUTHORIZED, path);
             }
         };

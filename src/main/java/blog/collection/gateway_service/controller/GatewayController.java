@@ -1,6 +1,6 @@
 package blog.collection.gateway_service.controller;
 
-import blog.collection.gateway_service.security.BlackListToken;
+import blog.collection.gateway_service.repository.BlackListTokenRepository;
 import blog.collection.gateway_service.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GatewayController {
     @Autowired
-    private BlackListToken blackListToken;
+    private BlackListTokenRepository blackListTokenRepository;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -22,7 +22,7 @@ public class GatewayController {
         try {
             long timeRemaining = jwtTokenProvider.getTimeRemainingOfToken(token);
             if (timeRemaining > 0) {
-                blackListToken.addTokenIntoBlackList(token, timeRemaining);
+                blackListTokenRepository.addTokenIntoBlackList(token, timeRemaining);
             }
             return ResponseEntity.ok("Token blacklisted successfully");
         } catch (Exception e) {
