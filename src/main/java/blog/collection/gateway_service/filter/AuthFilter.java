@@ -43,7 +43,9 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AbstractGatewayFilt
                     path.startsWith("/blog-collection/auth/failure") ||
                     path.startsWith("/blog-collection/auth/reset/verify") ||
                     path.startsWith("/blog-collection/auth/reset-password") ||
-                    path.startsWith("/login/oauth2")) {
+                    path.startsWith("/blog-collection/auth/test") ||
+                    path.startsWith("/login/oauth2") ||
+                    path.startsWith("/oauth2")) {
                 return chain.filter(exchange);
             }
 
